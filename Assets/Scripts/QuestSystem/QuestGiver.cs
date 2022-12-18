@@ -5,13 +5,18 @@ using TMPro;
 
 public class QuestGiver : MonoBehaviour
 {
+    [SerializeField] private SetLanguage m_setLanguage;
+    [SerializeField] private PlayerStatus m_playerStatus;
     [SerializeField] private Quest m_quest;
     [SerializeField] private GameObject m_questPanel;
     [SerializeField] private TextMeshProUGUI m_questTitle;
     [SerializeField] private TextMeshProUGUI m_questDescription;
 
-    [SerializeField] private GameObject m_mainPanel;
+    [SerializeField] private GameObject m_currentQuestPanel;
     [SerializeField] private TextMeshProUGUI m_currentQuest;
+
+    [SerializeField] private GameObject m_currentQuestItemPanel;
+    [SerializeField] private TextMeshProUGUI m_currentQuestItem;
 
     private bool trigged = false;
     private Renderer renderer;
@@ -53,20 +58,52 @@ public class QuestGiver : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space))
             {
-                m_questTitle.text = m_quest.m_title;
+                if (m_setLanguage.GetLanguage() == "english")
+                {
+                    m_questTitle.text = m_quest.m_titleEnglish;
+                }
+                else if (m_setLanguage.GetLanguage() == "portuguese")
+                {
+                    m_questTitle.text = m_quest.m_titlePortuguese;
+                }
                 if (m_quest.m_questGoal.VerifyGoal())
                 {
-                    m_questDescription.text = m_quest.m_messageCompleted;
+                    if (m_quest.m_isActive)
+                        m_playerStatus.EarnCoin(m_quest.m_coinReward);
+
+                    if (m_setLanguage.GetLanguage() == "english")
+                    {
+                        m_questDescription.text = m_quest.m_messageCompletedEnglish;
+                    }
+                    else if (m_setLanguage.GetLanguage() == "portuguese")
+                    {
+                        m_questDescription.text = m_quest.m_messageCompletedPortuguese;
+                    }
+                    
                     m_quest.CompleteQuest();
-                    m_mainPanel.gameObject.SetActive(false);
+                    m_currentQuestPanel.gameObject.SetActive(false);
+                    m_currentQuestItemPanel.gameObject.SetActive(false);
                 }
                 else
                 {
-                    m_questDescription.text = m_quest.m_description;
                     m_quest.AcceptQuest();
 
-                    m_currentQuest.text = "Current Quest: " + m_quest.m_title;
-                    m_mainPanel.gameObject.SetActive(true);
+                    if (m_setLanguage.GetLanguage() == "english")
+                    {
+                        m_questDescription.text = m_quest.m_descriptionEnglish;
+                        m_currentQuest.text = "Current Quest: " + m_quest.m_titleEnglish;
+                        m_currentQuestItem.text = "Quest Goals: " + m_quest.m_questGoal.currentSubGoals + "/" + m_quest.m_questGoal.requiredSubGoals;
+                    }
+                    else if (m_setLanguage.GetLanguage() == "portuguese")
+                    {
+                        m_questDescription.text = m_quest.m_descriptionPortuguese;
+                        m_currentQuest.text = "Missão Atual: " + m_quest.m_titlePortuguese;
+                        m_currentQuestItem.text = "Objetivos da Missão: " + m_quest.m_questGoal.currentSubGoals + "/" + m_quest.m_questGoal.requiredSubGoals;
+                    }
+
+                    
+                    m_currentQuestPanel.gameObject.SetActive(true);
+                    m_currentQuestItemPanel.gameObject.SetActive(true);
                 }
 
                 if (!m_questPanel.activeSelf)

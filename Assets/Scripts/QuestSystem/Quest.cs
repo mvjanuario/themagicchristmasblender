@@ -5,9 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public class Quest
 {
-    public string m_title;
-    public string m_description;
-    public string m_messageCompleted;
+    public string m_titleEnglish;
+    public string m_descriptionEnglish;
+    public string m_messageCompletedEnglish;
+    public string m_titlePortuguese;
+    public string m_descriptionPortuguese;
+    public string m_messageCompletedPortuguese;
     public int m_coinReward;
 
     public bool m_isActive;
