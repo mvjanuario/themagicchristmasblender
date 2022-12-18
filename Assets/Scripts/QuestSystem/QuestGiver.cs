@@ -58,6 +58,7 @@ public class QuestGiver : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space))
             {
+                m_playerStatus.SetQuestGiver(this);
                 if (m_setLanguage.GetLanguage() == "english")
                 {
                     m_questTitle.text = m_quest.m_titleEnglish;
@@ -125,5 +126,56 @@ public class QuestGiver : MonoBehaviour
     public Quest GetQuest()
     {
         return m_quest;
+    }
+
+    public void UpdateText()
+    {
+        if (m_setLanguage.GetLanguage() == "english")
+        {
+            m_questTitle.text = m_quest.m_titleEnglish;
+        }
+        else if (m_setLanguage.GetLanguage() == "portuguese")
+        {
+            m_questTitle.text = m_quest.m_titlePortuguese;
+        }
+        if (m_quest.m_questGoal.VerifyGoal())
+        {
+            if (m_quest.m_isActive)
+                m_playerStatus.EarnCoin(m_quest.m_coinReward);
+
+            if (m_setLanguage.GetLanguage() == "english")
+            {
+                m_questDescription.text = m_quest.m_messageCompletedEnglish;
+            }
+            else if (m_setLanguage.GetLanguage() == "portuguese")
+            {
+                m_questDescription.text = m_quest.m_messageCompletedPortuguese;
+            }
+
+            m_quest.CompleteQuest();
+            m_currentQuestPanel.gameObject.SetActive(false);
+            m_currentQuestItemPanel.gameObject.SetActive(false);
+        }
+        else
+        {
+            m_quest.AcceptQuest();
+
+            if (m_setLanguage.GetLanguage() == "english")
+            {
+                m_questDescription.text = m_quest.m_descriptionEnglish;
+                m_currentQuest.text = "Current Quest: " + m_quest.m_titleEnglish;
+                m_currentQuestItem.text = "Quest Goals: " + m_quest.m_questGoal.currentSubGoals + "/" + m_quest.m_questGoal.requiredSubGoals;
+            }
+            else if (m_setLanguage.GetLanguage() == "portuguese")
+            {
+                m_questDescription.text = m_quest.m_descriptionPortuguese;
+                m_currentQuest.text = "Missão Atual: " + m_quest.m_titlePortuguese;
+                m_currentQuestItem.text = "Objetivos da Missão: " + m_quest.m_questGoal.currentSubGoals + "/" + m_quest.m_questGoal.requiredSubGoals;
+            }
+
+
+            m_currentQuestPanel.gameObject.SetActive(true);
+            m_currentQuestItemPanel.gameObject.SetActive(true);
+        }
     }
 }

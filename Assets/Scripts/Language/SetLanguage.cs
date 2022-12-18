@@ -17,12 +17,14 @@ public class SetLanguage : MonoBehaviour
     {
         PlayerPrefs.SetString("language", "english");
         m_coinsText.text = "Coins: $" + m_playerStatus.m_coin;
+        m_playerStatus.GetQuestGiver().UpdateText();
     }
 
     public void SetLanguagePortuguese()
     {
         PlayerPrefs.SetString("language", "portuguese");
         m_coinsText.text = "Moedas: $" + m_playerStatus.m_coin;
+        m_playerStatus.GetQuestGiver().UpdateText();
     }
 
     public string GetLanguage()

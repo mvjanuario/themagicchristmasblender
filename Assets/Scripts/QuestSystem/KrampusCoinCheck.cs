@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class KrampusCoinCheck : MonoBehaviour
 {
@@ -59,7 +60,7 @@ public class KrampusCoinCheck : MonoBehaviour
             renderer.material.color = new Color(1, 0, 0, 1);
             if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space))
             {
-                if ((m_playerStatus.m_coin == m_goalCoins) && m_observed)
+                if ((m_playerStatus.m_coin >= m_goalCoins) && m_observed)
                 {
                     if (m_setLanguage.GetLanguage() == "english")
                     {
@@ -71,6 +72,7 @@ public class KrampusCoinCheck : MonoBehaviour
                         m_questTitle.text = m_namePortuguese;
                         m_questDescription.text = m_messageCompletedPortuguese;
                     }
+                    SceneManager.LoadScene(1);
                 }
                 else
                 {

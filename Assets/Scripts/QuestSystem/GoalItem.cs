@@ -12,6 +12,7 @@ public class GoalItem : MonoBehaviour
     [SerializeField] private string m_namePortuguese;
     [SerializeField] private string m_descriptionPortuguese;
     [SerializeField] private bool m_observed = false;
+    [SerializeField] private bool m_collected = false;
 
     [SerializeField] private GameObject m_goalItemPanel;
     [SerializeField] private TextMeshProUGUI m_goalItemName;
@@ -72,8 +73,9 @@ public class GoalItem : MonoBehaviour
                 
                 m_goalItemPanel.gameObject.SetActive(true);
 
-                if (m_questGiver.GetQuest().m_isActive && m_observed)
+                if (m_questGiver.GetQuest().m_isActive && m_observed && !m_collected)
                 {
+                    m_collected = true;
                     m_questGiver.GetQuest().m_questGoal.CollectItem();
                     StartCoroutine(FadeItem());
 
