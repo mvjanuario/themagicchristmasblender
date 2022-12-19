@@ -5,6 +5,7 @@ using TMPro;
 
 public class PlayerStatus : MonoBehaviour
 {
+    [SerializeField] private SetLanguage m_setLanguage;
     [SerializeField] private TextMeshProUGUI m_coinsText;
     
     private QuestGiver m_questGiver;
@@ -19,7 +20,14 @@ public class PlayerStatus : MonoBehaviour
     public void EarnCoin(int coin)
     {
         m_coin += coin;
-        m_coinsText.text = "Coins: " + m_coin;
+        if (m_setLanguage.GetLanguage() == "english")
+        {
+            m_coinsText.text = "Coins: $" + m_coin;
+        }
+        else if (m_setLanguage.GetLanguage() == "portuguese")
+        {
+            m_coinsText.text = "Moedas: $" + m_coin;
+        }
     }
 
     public void SetQuestGiver(QuestGiver questgiver)
